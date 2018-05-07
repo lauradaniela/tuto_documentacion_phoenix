@@ -1,0 +1,25 @@
+version: '2'
+services:
+  web:
+    image: fluvip/chat_messenger:v1
+    build: .
+    command: mix phx.server
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    links:
+      - db:db
+  db:
+    image: postgres:9.6
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER = "postgres"
+      - POSTGRES_PASSWORD = "postgres"
+      - POSTGRES_HOST = "db"
+      - POSTGRES_PORT = 5432
+    ports:
+      - "5432:5432"
